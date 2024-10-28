@@ -49,7 +49,6 @@ void lexicalAnalyzer(const string& code) {
         }
     }
 
-    // Print all tokens
     cout << "\nAll Tokens:\n";
     for (const auto& token : tokens) {
         cout << token << endl;
