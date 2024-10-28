@@ -1,49 +1,64 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <cctype>
 
-void lexicalAnalyzer(const std::string& code) {
-    std::string currentToken;
+using namespace std;
+
+void lexicalAnalyzer(const string& code) {
+    vector<string> tokens;
+    string currentToken;
 
     for (size_t i = 0; i < code.size(); ++i) {
         char c = code[i];
 
-        if (std::isspace(c)) {
+        if (isspace(c)) {
             continue;
         }
 
-        if (std::isalpha(c)) {
+        if (isalpha(c)) {
             currentToken += c;
-            while (i + 1 < code.size() && std::isalnum(code[i + 1])) {
+            while (i + 1 < code.size() && isalnum(code[i + 1])) {
                 currentToken += code[++i];
             }
             if (currentToken == "int") {
-                std::cout << "KEYWORD: " << currentToken << std::endl;
+                cout << "Token: Keyword, Value: " << currentToken << endl;
+                tokens.push_back("Keyword: " + currentToken);
             } else {
-                std::cout << "IDENTIFIER: " << currentToken << std::endl;
+                cout << "Token: Identifier, Value: " << currentToken << endl;
+                tokens.push_back("Identifier: " + currentToken);
             }
             currentToken.clear();
-        } else if (std::isdigit(c)) {
+        } else if (isdigit(c)) {
             currentToken += c;
-            while (i + 1 < code.size() && std::isdigit(code[i + 1])) {
+            while (i + 1 < code.size() && isdigit(code[i + 1])) {
                 currentToken += code[++i];
             }
-            std::cout << "NUMBER: " << currentToken << std::endl;
+            cout << "Token: Number, Value: " << currentToken << endl;
+            tokens.push_back("Number: " + currentToken);
             currentToken.clear();
         } else if (c == '=') {
-            std::cout << "ASSIGNMENT_OP: =" << std::endl;
+            cout << "Token: Operator, Value: " << c << endl;
+            tokens.push_back("Operator: =");
         } else if (c == ';') {
-            std::cout << "SEMICOLON: ;" << std::endl;
+            cout << "Token: Semicolon, Value: " << c << endl;
+            tokens.push_back("Semicolon: ;");
         } else {
-            std::cout << "UNKNOWN: " << c << std::endl;
+            cout << "Token: Unknown, Value: " << c << endl;
+            tokens.push_back("Unknown: " + string(1, c));
         }
+    }
+
+    // Print all tokens
+    cout << "\nAll Tokens:\n";
+    for (const auto& token : tokens) {
+        cout << token << endl;
     }
 }
 
 int main() {
-    std::string code = "int age = 25;";
-    std::cout << "Tokens:" << std::endl;
-    lexicalAnalyzer(code);
-
+    string input = "int age = 25;";
+    cout << "Analyzing Expression: \"" << input << "\"\n";
+    lexicalAnalyzer(input);
     return 0;
 }
